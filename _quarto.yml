@@ -1,4 +1,3 @@
-_quarto.yaml
 project:
-  out-dir: outputs
+  output-dir: outputs
   

@@ -1,3 +1,23 @@
+
+# ==================================================
+# 
+# Projekt: DataValidR
+# Script: 00100_input.R
+#
+# Zweck:
+# Import von csv-Dateien in R und Speicherung als data.frame
+#
+# Input:
+# directory: Verzeichnis der csv-Datei
+# datafile: Name der csv-Datei ohne Endung .csv
+#
+# Output:
+# data.frame 'dataset'
+#
+# Autor: H. Wimmer
+# Erstellt: 13.11.2026
+# =================================================
+
 # Workspace bereinigen!
 rm(list = ls(all.names = TRUE))
 
@@ -7,16 +27,11 @@ graphics.off()
 # Lösche Konsole
 cat("\014") 
 
+# Funktiopnen einlesen
+source("R/read_rds_auto.R")
 
-# =-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=--=-=-=-=-=-=-=--=-=-=-=-=-=-=
-# 00100_input.R
-# Projekt: WPF | Beyond Westgard
-# E-mail: helge.wimmer@hcw.ac.at
-# Erstellungsdatum: 2026-11-24
-# letzte Änderung:  2026-01-24
-today <- format(Sys.Date(), format = "%d.%m.%Y") # heutiges Datum
-# Version: 1.0
-# =-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=--=-=-=-=-=-=-=--=-=-=-=-=-=-=
+# heutiges Datum
+today <- format(Sys.Date(), format = "%d.%m.%Y")
 
 # Autor für Ausdrucke
 author <- "BioAB28V"
@@ -30,18 +45,40 @@ directory <- "data/raw"
 # Einheit der x-Variable
 xEinheit <- "mg/L"
 
+# Chargennummer der KOntrolle
+kontr_chnr <- "LT143 HN"
+
+# Bezeichnungder Kontrolle
+kontr_bez <- "Kontrolle normal"
+
 # Zielwert der Kontrollwerte
 target <- 110
 
 # Standardabweichung der Kontrollwerte
 sd <- 1.84
 
-# die Funktion liest eine CSV-Datei ein und übergibt die Daten der Variable
-# dataset als data.frame
-dataset <- read.table(
-  paste0(directory, "/", datafile, ".csv"),        # Dateipfad mit Variablen
-  sep = ";",                                       # Spaltentrenner
-  header = FALSE,                                  # Uebershrift ja/nein
-  dec = "."                                        # Dezimaltrenner   
-)
+# die Funktion  read_sv_auto() liest eine CSV-Datei ein und übergibt die Daten 
+# der Variable dataset
+dataset <- read_rds_auto(paste0(directory, "/", datafile, ".rds"))
+
+
+# Erstelle Report
+quarto::quarto_render(input = "reports/Aufgabe_A.qmd", 
+                   output_format = "docx",
+                   execute_params = list(
+                     dataset = dataset,
+                     today = today,
+                     author = author,
+                     xEinheit = xEinheit,
+                     target = target,
+                     sd = sd,
+                     kontr_chnr = kontr_chnr,
+                     kontr_bez = kontr_bez
+                   ))
+
+
+# Fertig
+message("Done. See data/processed and outputs/ for results.")
+
+
 

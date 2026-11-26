@@ -1,0 +1,58 @@
+---
+title: "Erster Report"
+lang: de
+params:
+  dataset: NULL
+  today: today,
+  author: author,
+  xEinheit: xEinheit,
+  target: target,
+  sd: sd,
+  kontr_chnr: kontr_chnr,
+  kontr_bez: kontr_bez
+---
+
+```{r}
+#| label: load-data
+#| message: false
+#| output: false
+#| echo: false
+
+dataset <- params$dataset
+```
+
+## Überblick
+
+Der Datensatz besteht aus `r length(dataset)` Konzentrationswerten, die in der Datei `data_1.csv` gespeichert sind. Die Werte sind in `r params$xEinheit` angegeben.
+
+Die Kontrolle wurde mit der Chargennummer `r params$kontr_chnr` durchgeführt und trägt die Bezeichnung `r params$kontr_bez`. Der Zielwert der Kontrollwerte beträgt `r params$target` und die Standardabweichung der Kontrollwerte beträgt `r params$sd`.
+
+
+### Arithmetischer Mittelwert
+
+Der arithmetische Mittelwert (oft auch „arithmetisches Mittel“ oder nur „Mittelwert“ genannt) der Stichprobe ist der bekannteste Lageparameter und Schätzer für μ, den Mittelwert der Grundgesamtheit. Er wird gebildet, indem man alle Ausprägungen aufsummiert und durch die Gesamtzahl von Ausprägungen teilt.
+
+- Ein Vorteil des Mittelwerts ist, dass er sensitiv hinsichtlich jedes einzelnen Werts ist.
+
+- Das bedeutet, dass wenn sich ein Wert ändert, sich auch der Mittelwert ändert.
+
+- Aufgrund dieser Eigenschaft ist der Mittelwert ein guter Schätzer des Zentrums einer Verteilung.
+
+- Dadurch, dass der Mittelwert sehr sensitiv hinsichtlich jeden Werts ist, kann er auch stark beeinflusst werden durch Ausreißer.
+
+Für die Beobachtungen x~1~, x~2~, . . . , x~n~ sieht das arithmetische Mittel $\bar{x}$ folgendermaßen aus:
+
+$$
+\bar{x}=\frac{1}{n}\cdot\sum_{i=1}^{n} x_{i}
+$$ {#eq-mean}
+
+### Berechnung in R
+
+```{r}
+#| label: xMean
+
+# Mittelwert der Konzentrationen mittels Funktion mean()
+xMean <- mean(dataset, na.rm = TRUE)
+```
+
+Das der Mittelwert der Daten $`r xMean`$
